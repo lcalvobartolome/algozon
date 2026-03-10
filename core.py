@@ -229,9 +229,23 @@ class Stock:
         
         return breakdown
                 
+                
+class Catalog:
     
+    def __init__(self) -> None:
+        self._products : dict[str, Product] = {}
+        
+    def __str__(self):
+        pass
+        
+    def add_product(self, product: Product) -> None:
+        self._products[product.product_id] = product
     
+    def get_products(self) -> list[Product]:
+        return list(self._products.values())
+            
     
+
 if __name__ == "__main__":
     product = Product("A-001", "yogur natural", "alimentación")
     print(product)
