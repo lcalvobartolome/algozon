@@ -231,19 +231,23 @@ class Stock:
                 
                 
 class Catalog:
-    
+
     def __init__(self) -> None:
-        self._products : dict[str, Product] = {}
-        
-    def __str__(self):
-        pass
-        
+        self._products: dict[str, Product] = {}
+
+    def __str__(self) -> str:
+        if not self._products:
+            return "Catálogo vacío."
+        lines = ["Catálogo de productos:"]
+        for product in self._products.values():
+            lines.append(f"  - {product}")
+        return "\n".join(lines)
+
     def add_product(self, product: Product) -> None:
         self._products[product.product_id] = product
-    
+
     def get_products(self) -> list[Product]:
         return list(self._products.values())
-            
     
 
 if __name__ == "__main__":

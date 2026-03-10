@@ -109,6 +109,6 @@ class EmployeeCustomer(Customer):
     def is_eligible_for_minigame(self) -> bool:
         return False    
     
-
-my_c = GuestCustomer("1234", "yo", "yo@gmail.com")
-print(my_c)
+if __name__ == "__main__":
+    my_c = GuestCustomer("1234", "yo", "yo@gmail.com")
+    print(my_c)
