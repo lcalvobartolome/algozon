@@ -159,13 +159,11 @@ class Stock:
         return breakdown
     
     def _remove_empty_batches(self, product_id: str) -> None:
-        batches = self._inventory.get(product_id, [])
-        
-        self._inventory = [
-            batch for batch in batches if batch.get_quantity() > 0
-        ]
-        
-        
+        batches = self._inventory.get(product_id)
+        if batches is not None:
+            self._inventory[product_id] = [
+                b for b in batches if b.get_quantity() > 0
+            ]
     
     def sell_e21(self, product_id: str, quantity: int) -> None:
         batches = self._inventory.get(product_id, [])
