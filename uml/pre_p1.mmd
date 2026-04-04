@@ -1,0 +1,102 @@
+classDiagram
+    direction LR
+    class Product {
+        +product_id: str
+        +name: str
+        +category: str
+        +__str__() str
+    }
+    class Batch {
+        +batch_id: str
+        +product_id: str
+        -_quantity: int
+        +unit_cost: float
+        +expiration_date: date
+        +__str__() str
+        +get_quantity() int
+        +consume(quantity) None
+    }
+    class Stock {
+        -_inventory: dict
+        -_reorder_threshold: int
+        -_reservations: dict
+        +get_batches(product_id) tuple
+        +total_stock(product_id) int
+        +add_shipment(batch) None
+        +maybe_restock(product_id) bool
+        +sell(product_id, quantity) list
+        +remove_expired(today) None
+        +reserve(cart_id, product_id, quantity) None
+        +release(cart_id) None
+        +available_stock(product_id) int
+    }
+    class OutOfStockError {
+        +product_id: str
+        +available: int
+        +requested: int
+        +__str__() str
+        +__repr__() str
+    }
+    class Exception {
+    }
+    class PricingPolicy {
+        -_logistics_rate: float
+        -_profit_rate: float
+        +get_logistics_rate() float
+        +get_profit_rate() float
+        +net_price(unit_cost) float
+        +gross_price(net_price, tax_rate) float
+        +price_breakdown(unit_cost, tax_rate) dict
+    }
+    class Catalog {
+        -_products: dict
+        +add_product(product) None
+        +get_products() list
+        +__str__() str
+    }
+    class Customer {
+        <<abstract>>
+        +customer_id: str
+        +name: str
+        +email: str
+        +__str__() str
+        +final_price(gross_price) float*
+        +label() str*
+        +is_eligible_for_minigame() bool*
+    }
+    class GuestCustomer {
+        +final_price(gross_price) float
+        +label() str
+        +is_eligible_for_minigame() bool
+    }
+    class BusinessCustomer {
+        +final_price(gross_price) float
+        +label() str
+        +is_eligible_for_minigame() bool
+    }
+    class TaxExemptBusinessCustomer {
+        +final_price(gross_price) float
+        +label() str
+        +is_eligible_for_minigame() bool
+    }
+    class IndividualCustomer {
+        +final_price(gross_price) float
+        +label() str
+        +is_eligible_for_minigame() bool
+    }
+    class EmployeeCustomer {
+        +final_price(gross_price) float
+        +label() str
+        +is_eligible_for_minigame() bool
+    }
+
+    Stock "1" *-- "1..*" Batch
+    Batch "1..*" --> "1" Product
+    Stock ..> OutOfStockError : raises
+    OutOfStockError --|> Exception
+    Catalog "1" *-- "0..*" Product
+    Customer <|-- GuestCustomer
+    Customer <|-- BusinessCustomer
+    Customer <|-- IndividualCustomer
+    Customer <|-- EmployeeCustomer
+    BusinessCustomer <|-- TaxExemptBusinessCustomer
